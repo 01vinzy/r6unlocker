@@ -16,10 +16,10 @@ Electron.ipcMain.on('injector', (event, arg) => {
   if (arg === 'start') {
     const config = Config.read()
     if (!config) {
-      event.returnValue = { type: 'error', message: 'There is no existing config. You must start the game with Uplay to generate the config.' }
+      event.returnValue = { type: 'error', message: 'No path configured. You must start the game manually at least once to create the path configuration.' }
     } else {
       if (!fs.existsSync(config.path)) {
-        event.returnValue = { type: 'error', message: 'The path in the config is invalid. You must start the game with Uplay to update the config.' }
+        event.returnValue = { type: 'error', message: 'The path in the config is invalid. You must start the game manually at least once to create the path configuration.' }
       } else {
         if (Injector.openProcess() === 'OK') event.returnValue = { type: 'warning', message: 'Game already started' }
         require('child_process').exec('"' + config.path + '" /belaunch -be')
