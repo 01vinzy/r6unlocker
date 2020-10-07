@@ -7,7 +7,11 @@ With R6Unlocker, you can unlock all skins (including headgear, uniform, weapon s
 This works only while BattleEye is deactivated. You can use this to modify your save file to include some nice skins.
 
 ## Installation
-Simply download the [latest release](https://github.com/Terax235/r6unlocker/releases/latest), open up Rainbow Six Siege and launch the tool. Use the GUI to unlock, lock or normalize all data.
+1. Download the [latest release](https://github.com/Terax235/r6unlocker/releases/latest) (only the `.exe` file is needed)
+2. Launch Rainbow Six Siege with BattleEye deactivated. This is required, else you will get kicked out while trying to change offsets. Disabling BattleEye means that you can't play matches online for the time, but you can still modify the savegame to add skins you want.
+> You can deactivate BattleEye by adding `/belaunch -be` to the start arguments. In a future version, I will also support starting the game directly using the tool
+3. Launch the `.exe` once you are in menu
+4. Now you can select *Unlock All*, *Normal* and *Lock All*
 
 ## Updates
-This tool can break if there are updates for Rainbow Six Siege. Since this app uses an auto updater, you should not have to worry about it once I've updated the regarding offsets.
+If there is an update for Rainbow Six Siege, there is a likely chance that this tool will break. I will then update the regarding offsets as soon as possible. If you use the `.exe`, you can simply wait until I've published a new release. The app will automatically get updated.
