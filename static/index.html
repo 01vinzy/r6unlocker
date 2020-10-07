@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="messagebx"></div><br><br>
+    <div style="text-align:center;">
+        <button class="injector" id="injectorUnlock" onclick="unlockAll()">Unlock All</button>
+        <button class="injector" id="injectorNormal" onclick="normal()" disabled=true>Normalize</button>
+        <button class="injector" id="injectorLock" onclick="lockAll()">Lock All</button>
+    </div>
+
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron')
+
+        function unlockAll() {
+            const res = ipcRenderer.sendSync('injector', 'unlock')
+            if (res === 'OK' && document.getElementById('injectorNormal').disabled) {
+                document.getElementById('injectorNormal').disabled = false
+            };
+            setMessageBox(res)
+        };
+
+        function lockAll() {
+            const res = ipcRenderer.sendSync('injector', 'lock')
+            if (res === 'OK' && document.getElementById('injectorNormal').disabled) {
+                document.getElementById('injectorNormal').disabled = false
+            };
+            setMessageBox(res)
+        };
+
+        function normal() {
+            const res = ipcRenderer.sendSync('injector', 'normal')
+            if (res === 'OK' && !document.getElementById('injectorNormal').disabled) {
+                document.getElementById('injectorNormal').disabled = true
+            };
+            setMessageBox(res)
+        };
+
+        function setMessageBox(arg) {
+            if (arg !== 'OK') {
+                document.getElementById('messagebx').className = 'alert'
+                document.getElementById('messagebx').innerHTML = '<strong>Error</strong> ' + arg
+            } else {
+                document.getElementById('messagebx').className = 'success'
+                document.getElementById('messagebx').innerHTML = '<strong>Success</strong>'
+            }
+        };
+    </script>
+</body>
+
+</html>

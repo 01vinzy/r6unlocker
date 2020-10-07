@@ -1,0 +1,52 @@
+{
+  "name": "r6unlocker",
+  "version": "1.0.0",
+  "description": "Rainbow Six Unlocker for skins and operators",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder",
+    "publish": "electron-builder -p onTagOrDraft"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Terax235/r6unlocker.git"
+  },
+  "keywords": [
+    "rainbow-six-siege",
+    "r6unlocker"
+  ],
+  "author": "Terax235",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Terax235/r6unlocker/issues"
+  },
+  "homepage": "https://github.com/Terax235/r6unlocker#readme",
+  "devDependencies": {
+    "electron": "^10.1.3",
+    "electron-builder": "^22.8.1",
+    "eslint": "^7.10.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "build": {
+    "appId": "r6unlocker",
+    "productName": "Rainbow Six Unlocker",
+    "mac": {
+      "category": "r6unlocker"
+    },
+    "win": {
+      "publish": [
+        "github"
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-log": "^4.2.4",
+    "electron-updater": "^4.3.5",
+    "memoryjs": "git+https://github.com/Luchanso/memoryjs.git"
+  }
+}
