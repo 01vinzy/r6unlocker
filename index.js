@@ -1,53 +1,55 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+/* eslint-disable no-case-declarations */
+const fs = require('fs')
+
+const Config = require('./structures/Config.js')
+const Electron = require('./structures/Electron.js')
+const Injector = require('./structures/Injector.js')
 const pkgfile = require('./package.json')
 
-const Injector = require('./structures/Injector.js')
-const { Updater } = require('./structures/Updater.js')
+global.owner = pkgfile.author
+global.version = pkgfile.version
+global.repository = pkgfile.repository.url.split('git+')[1].split('.git')[0]
 
-ipcMain.on('injector', (event, arg) => {
-  switch (arg) {
-    case 'unlock':
-      event.returnValue = Injector.unlockAll()
-      break
-    case 'normal':
-      event.returnValue = Injector.normal()
-      break
-    case 'lock':
-      event.returnValue = Injector.lock()
-      break
-  }
-})
+Electron.start()
 
-function createWindow () {
-  const win = new BrowserWindow({
-    title: 'Rainbow Six Injector v' + pkgfile.version,
-    autoHideMenuBar: true,
-    fullscreenable: false,
-    width: 400,
-    height: 400,
-    webPreferences: {
-      devTools: false,
-      nodeIntegration: true
+Electron.ipcMain.on('injector', (event, arg) => {
+  if (arg === 'start') {
+    const config = Config.read()
+    if (!config) {
+      event.returnValue = { type: 'error', message: 'There is no existing config. You must start the game with Uplay to generate the config.' }
+    } else {
+      if (!fs.existsSync(config.path)) {
+        event.returnValue = { type: 'error', message: 'The path in the config is invalid. You must start the game with Uplay to update the config.' }
+      } else {
+        if (Injector.openProcess() === 'OK') event.returnValue = { type: 'warning', message: 'Game already started' }
+        require('child_process').exec('"' + config.path + '" /belaunch -be')
+        event.returnValue = { type: 'success', message: 'Starting the game without BattleEye...' }
+      };
     }
-  })
-  win.loadFile('./static/index.html')
-  Injector.openProcess()
-}
-
-app.whenReady().then(createWindow)
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('ready', () => {
-  Updater.checkForUpdatesAndNotify()
-})
-
-app.on('activate', () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
   };
+  if (arg === 'unlock') {
+    const unlock = Injector.unlockAll()
+    if (unlock !== 'OK') { event.returnValue = { type: 'error', message: unlock } } else { event.returnValue = { type: 'success', message: 'Successfully unlocked everything.' } }
+  };
+  if (arg === 'lock') {
+    const lock = Injector.lock()
+    if (lock !== 'OK') { event.returnValue = { type: 'error', message: lock } } else { event.returnValue = { type: 'success', message: 'Successfully locked everything.' } }
+  };
+  if (arg === 'normal') {
+    const normal = Injector.normal()
+    if (normal !== 'OK') { event.returnValue = { type: 'error', message: normal } } else { event.returnValue = { type: 'success', message: 'Successfully normalized.' } }
+  };
+})
+
+Electron.ipcMain.on('info', (event, arg) => {
+  event.returnValue = { owner: global.owner, version: global.version, repository: global.repository }
+})
+
+Electron.ipcMain.on('processOpen', (event) => {
+  const open = Injector.openProcess()
+  if (open === 'OK') {
+    event.returnValue = true
+  } else {
+    event.returnValue = false
+  }
 })

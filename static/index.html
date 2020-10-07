@@ -9,52 +9,16 @@
 </head>
 
 <body>
-    <div id="messagebx"></div><br><br>
+    <div id="messagebx"></div><br>
+    <div class="notification-bottom"><p id="processstatus">Game Status: <b style="color:red;">Not running</b></p></div>
+    <div class="btninfo"><a onclick='openInfoWindow()'><img src="info.png" width=35 height=35></a></div>
     <div style="text-align:center;">
         <button class="injector" id="injectorUnlock" onclick="unlockAll()">Unlock All</button>
         <button class="injector" id="injectorNormal" onclick="normal()" disabled=true>Normalize</button>
         <button class="injector" id="injectorLock" onclick="lockAll()">Lock All</button>
+        <button class="injector" id="injectorStart" onclick="startGame()">Start Game</button>
     </div>
-
-    <script>
-        const {
-            ipcRenderer
-        } = require('electron')
-
-        function unlockAll() {
-            const res = ipcRenderer.sendSync('injector', 'unlock')
-            if (res === 'OK' && document.getElementById('injectorNormal').disabled) {
-                document.getElementById('injectorNormal').disabled = false
-            };
-            setMessageBox(res)
-        };
-
-        function lockAll() {
-            const res = ipcRenderer.sendSync('injector', 'lock')
-            if (res === 'OK' && document.getElementById('injectorNormal').disabled) {
-                document.getElementById('injectorNormal').disabled = false
-            };
-            setMessageBox(res)
-        };
-
-        function normal() {
-            const res = ipcRenderer.sendSync('injector', 'normal')
-            if (res === 'OK' && !document.getElementById('injectorNormal').disabled) {
-                document.getElementById('injectorNormal').disabled = true
-            };
-            setMessageBox(res)
-        };
-
-        function setMessageBox(arg) {
-            if (arg !== 'OK') {
-                document.getElementById('messagebx').className = 'alert'
-                document.getElementById('messagebx').innerHTML = '<strong>Error</strong> ' + arg
-            } else {
-                document.getElementById('messagebx').className = 'success'
-                document.getElementById('messagebx').innerHTML = '<strong>Success</strong>'
-            }
-        };
-    </script>
+    <script src="./script.js"></script>
 </body>
 
 </html>

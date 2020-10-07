@@ -102,3 +102,9 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Config
+config.json
+
+# Publish script
+publish.sh

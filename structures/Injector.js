@@ -1,6 +1,9 @@
 const memoryjs = require('memoryjs')
 
+const Config = require('./Config.js')
+
 let RainbowProcess
+let lastPath
 
 const offsets = {
   base: 58944820,
@@ -13,18 +16,20 @@ const offsets = {
 exports.openProcess = function () {
   try {
     const process = memoryjs.openProcess('RainbowSix.exe')
+    const module = memoryjs.findModule('RainbowSix.exe', process.th32ProcessID)
     if (process) RainbowProcess = process
+    if (module && module.szExePath && (!lastPath || lastPath !== module.szExePath)) {
+      Config.write({ path: module.szExePath })
+    };
     return 'OK'
   } catch (error) {
-    return 'Couldn\'t find process. Make sure that you are not using TTS or Vulcan.'
+    return 'Could not find process. Make sure that you are not using TTS or Vulcan.'
   };
 }
 
 exports.unlockAll = function () {
-  if (!RainbowProcess) {
-    const open = exports.openProcess()
-    if (open !== 'OK') { return open };
-  };
+  const open = exports.openProcess()
+  if (open !== 'OK') { return open };
   try {
     memoryjs.writeBuffer(RainbowProcess.handle, RainbowProcess.modBaseAddr + offsets.base, offsets.unlock)
     return 'OK'
@@ -34,10 +39,8 @@ exports.unlockAll = function () {
 }
 
 exports.lock = function () {
-  if (!RainbowProcess) {
-    const open = exports.openProcess()
-    if (open !== 'OK') { return open };
-  };
+  const open = exports.openProcess()
+  if (open !== 'OK') { return open };
   try {
     memoryjs.writeBuffer(RainbowProcess.handle, RainbowProcess.modBaseAddr + offsets.base, offsets.lock)
     return 'OK'
@@ -47,10 +50,8 @@ exports.lock = function () {
 }
 
 exports.normal = function () {
-  if (!RainbowProcess) {
-    const open = exports.openProcess()
-    if (open !== 'OK') { return open };
-  };
+  const open = exports.openProcess()
+  if (open !== 'OK') { return open };
   try {
     memoryjs.writeBuffer(RainbowProcess.handle, RainbowProcess.modBaseAddr + offsets.base, offsets.normal)
     return 'OK'
