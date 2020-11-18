@@ -1,6 +1,6 @@
 {
   "name": "r6unlocker",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Rainbow Six Unlocker for skins and operators",
   "main": "index.js",
   "scripts": {
@@ -23,14 +23,14 @@
   },
   "homepage": "https://github.com/Terax235/r6unlocker#readme",
   "devDependencies": {
-    "electron": "^10.1.4",
+    "electron": "^10.1.5",
     "electron-builder": "^22.9.1",
-    "eslint": "^7.11.0",
+    "eslint": "^7.13.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1"
+    "eslint-plugin-standard": "^4.1.0"
   },
   "build": {
     "appId": "r6unlocker",
@@ -45,7 +45,7 @@
     }
   },
   "dependencies": {
-    "electron-log": "^4.2.4",
+    "electron-log": "^4.3.0",
     "electron-updater": "^4.3.5",
     "memoryjs": "git+https://github.com/Luchanso/memoryjs.git"
   }
