@@ -22,7 +22,7 @@ Electron.ipcMain.on('injector', (event, arg) => {
         event.returnValue = { type: 'error', message: 'The path in the config is invalid. You must start the game manually at least once to create the path configuration.' }
       } else {
         if (Injector.openProcess() === 'OK') event.returnValue = { type: 'warning', message: 'Game already started' }
-        require('child_process').exec('"' + config.path + '" /belaunch -be')
+        require('child_process').exec('"' + config.path + '" /belaunch be')
         event.returnValue = { type: 'success', message: 'Starting the game without BattleEye...' }
       };
     }
@@ -30,10 +30,6 @@ Electron.ipcMain.on('injector', (event, arg) => {
   if (arg === 'unlock') {
     const unlock = Injector.unlockAll()
     if (unlock !== 'OK') { event.returnValue = { type: 'error', message: unlock } } else { event.returnValue = { type: 'success', message: 'Successfully unlocked everything.' } }
-  };
-  if (arg === 'lock') {
-    const lock = Injector.lock()
-    if (lock !== 'OK') { event.returnValue = { type: 'error', message: lock } } else { event.returnValue = { type: 'success', message: 'Successfully locked everything.' } }
   };
   if (arg === 'normal') {
     const normal = Injector.normal()

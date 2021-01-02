@@ -22,8 +22,9 @@ autoUpdater.on('error', (err) => {
 autoUpdater.on('download-progress', (progressObj) => {
   log.info('Download speed: ' + progressObj.bytesPerSecond + ' - Downloaded ' + progressObj.percent + '% (' + progressObj.transferred + '/' + progressObj.total + ')')
 })
-autoUpdater.on('update-downloaded', (info) => {
+autoUpdater.on('update-downloaded', () => {
   log.info('Update downloaded')
+  autoUpdater.quitAndInstall()
 })
 
 exports.Updater = autoUpdater

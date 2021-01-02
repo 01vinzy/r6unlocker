@@ -20,11 +20,6 @@ function unlockAll () {
   setMessageBox(res, 'unlock')
 };
 
-function lockAll () {
-  const res = ipcRenderer.sendSync('injector', 'lock')
-  setMessageBox(res, 'lock')
-};
-
 function normal () {
   const res = ipcRenderer.sendSync('injector', 'normal')
   setMessageBox(res, 'normal')
@@ -52,10 +47,6 @@ function setMessageBox (result, type) {
   if (type === 'unlock') {
     document.getElementById('injectorUnlock').disabled = disable
     if (disable) { document.getElementById('injectorLock').disabled = false; document.getElementById('injectorNormal').disabled = false }
-  };
-  if (type === 'lock') {
-    document.getElementById('injectorLock').disabled = disable
-    if (disable) { document.getElementById('injectorUnlock').disabled = false; document.getElementById('injectorNormal').disabled = false }
   };
   if (type === 'start') document.getElementById('injectorStart').disabled = disable
 
